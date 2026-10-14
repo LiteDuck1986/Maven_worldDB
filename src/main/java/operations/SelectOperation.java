@@ -37,8 +37,16 @@ public class SelectOperation {
 				col.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(j)));
 				table.getColumns().add(col);
 			}
+			while(rs.next()) {
+				ObservableList<String> row =
+						FXCollections.observableArrayList();
+				for(int i=1; i<=colCount; i++) {
+					row.add(rs.getString(i) == null ? "" : rs.getString(i));
+				}
+				data.add(row);
+			}
+			table.setItems(data);
 		}
-		
 		return columnNames;
 	}
 }
