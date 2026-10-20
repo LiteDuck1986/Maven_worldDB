@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import atlantafx.base.theme.NordDark;
+import atlantafx.base.theme.PrimerDark;
 import atlantafx.base.theme.PrimerLight;
 import db.DatabaseConnection;
 import javafx.application.Application;
@@ -12,14 +14,17 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import operations.SelectOperation;
+import operations.ViewManager;
 
 public class WorldDbApp extends Application{
 	private Connection con;
@@ -38,11 +43,11 @@ public class WorldDbApp extends Application{
 	
 	@Override
 	public void start(Stage stage) {
-		Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet()); // Var arī izmantot PrimerDark(), NordDark()
+		Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet()); // Var arī izmantot PrimerDark(), NordDark()
 		
 		try {
 			con = DatabaseConnection.getConnection();
-			// databaseView = ViewManager.getDatabaseViews(con);
+			databaseView = ViewManager.getDatabaseViews(con);
 			
 		} catch (Exception e) {
 			showAlert("Savienojuma kļūda: ", e.getMessage());
@@ -61,13 +66,16 @@ public class WorldDbApp extends Application{
 		}
 		
 		btnSelect.setOnAction(e -> loadData());
-		
-		// Šeit vēl būs..
+		btnInsert.setOnAction(e -> showInsertUpdateDialog(false));
+		btnUpdate.setOnAction(e -> showInsertUpdateDialog(true));
+//		btnDelete.setOnAction(e -> performDelete());
 		
 		tableSelector.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
 			boolean isSeperator = (newVal == null || newVal.startsWith("---"));
 			btnSelect.setDisable(isSeperator);
-			// Vēlāk jāpieliek pārējās pogas
+			btnInsert.setDisable(isSeperator);
+			btnUpdate.setDisable(isSeperator);
+			btnDelete.setDisable(isSeperator);
 		});
 		
 		tableSelector.getSelectionModel().select(1);
@@ -76,9 +84,9 @@ public class WorldDbApp extends Application{
 		
 		topBox.setPadding(new Insets(10));
 		
-		// Pēc tam jauztaisa bottomBox, priekš pārējām pogām
+		HBox bottomBox = new HBox(10, btnInsert, btnUpdate, btnDelete);
 		
-		VBox root = new VBox(10, topBox, table); // Jāpapildina ar 
+		VBox root = new VBox(10, topBox, table, bottomBox); // Jāpapildina ar 
 		stage.setScene(new Scene(root, 900, 600));
 		stage.setTitle("World DB APP");
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon.png")));
@@ -106,7 +114,36 @@ public class WorldDbApp extends Application{
 		alert.showAndWait();
 	}
 	
-	
+	private void showInsertUpdateDialog(boolean isUpdate) {
+		String tableName = tableSelector.getValue();
+		if(tableName == null || tableName.startsWith("---"))
+			return;
+		
+		if(databaseView.contains(tableName)) {
+			showAlert("Uzmanību!", "Izvēlētais objekts ir skats! Datus tajā mainīt un ievietot nevar!");
+			return;
+		}
+		
+		loadData();
+		Alert dialog = new Alert(Alert.AlertType.INFORMATION);
+		dialog.setTitle(isUpdate ? "UPDATE " + tableName : "INSERT " +tableName);
+		
+		dialog.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+		
+		if(isUpdate) {
+			dialog.setHeaderText("Aizpildi laukus, lai atjauninātu:");
+			
+		} else {
+			dialog.setHeaderText("Aizpildi laukus, lai pievienotu:");
+		}
+		
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new Insets(20));
+		
+		//.........
+	}
 
 	public static void main(String[] args) {
 		launch(args);
