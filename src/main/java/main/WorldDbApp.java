@@ -1,6 +1,7 @@
 package main;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -284,9 +285,13 @@ public class WorldDbApp extends Application{
 			} catch (IllegalArgumentException e) {
 				showAlert("Ievades datu kļūda!", e.getMessage());
 				event.consume();
-			} catch (Exception e) {
+			} catch (SQLException e) {
+				if (e.getErrorCode() == 1451) {
+					showAlert("Nevarēja dzēst ierakstu!", "Nevar dzēst valsti! Tai ir peisaistītas pilsētas vai valodas.");
+				}else {
 				showAlert("SQL kļūda! ",e.getMessage());
 				event.consume();
+				}
 			}
 		});
 		dialog.showAndWait();
