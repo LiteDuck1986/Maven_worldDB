@@ -59,6 +59,8 @@ public class WorldDbApp extends Application{
 		
 		tableSelector.getItems().add("-- Tabulas ---");
 		tableSelector.getItems().addAll("city"); // paši pieliksiet pārējās divas tabulas
+		tableSelector.getItems().addAll("country");
+		tableSelector.getItems().addAll("countrylanguage");
 		
 		if(databaseView.isEmpty()) {
 			tableSelector.getItems().add("--- NAV ATRASTS NEVIENS SKATS ---");

@@ -1,0 +1,9 @@
+operations\InsertOperation.class
+operations\SelectOperation.class
+db\TestConnection.class
+main\Launcher.class
+operations\ViewManager.class
+operations\UpdateOperation.class
+db\DatabaseConnection.class
+operations\DeleteOperation.class
+main\WorldDbApp.class

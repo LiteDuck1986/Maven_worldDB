@@ -2,3 +2,8 @@ C:\Users\3PT\Documents\db_java\maven_worldDB\src\main\java\db\DatabaseConnection
 C:\Users\3PT\Documents\db_java\maven_worldDB\src\main\java\db\TestConnection.java
 C:\Users\3PT\Documents\db_java\maven_worldDB\src\main\java\main\Launcher.java
 C:\Users\3PT\Documents\db_java\maven_worldDB\src\main\java\main\WorldDbApp.java
+C:\Users\3PT\Documents\db_java\maven_worldDB\src\main\java\operations\DeleteOperation.java
+C:\Users\3PT\Documents\db_java\maven_worldDB\src\main\java\operations\InsertOperation.java
+C:\Users\3PT\Documents\db_java\maven_worldDB\src\main\java\operations\SelectOperation.java
+C:\Users\3PT\Documents\db_java\maven_worldDB\src\main\java\operations\UpdateOperation.java
+C:\Users\3PT\Documents\db_java\maven_worldDB\src\main\java\operations\ViewManager.java
