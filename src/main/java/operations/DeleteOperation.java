@@ -15,6 +15,14 @@ public class DeleteOperation {
 		}
 	}
 	
-	// Vajag metodi priekš countrylanguage,
-	// jo tur ir kombinēta atslēga
+	public static int deleteLanguage(Connection con, String countryCode, String language) throws SQLException {
+		String sql = "DELETE FROM countrylanguage " +
+						"WHERE CountryCode = ? AND Language = ?";
+		
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, countryCode);
+			ps.setString(2, language);
+			return ps.executeUpdate();
+		}
+	}
 }

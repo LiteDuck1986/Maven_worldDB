@@ -234,7 +234,14 @@ public class WorldDbApp extends Application{
 		List<String> pkColumns = new ArrayList<>();
 		List<TextField> textFields = new ArrayList<>();
 		
-		pkColumns.add(currentColumns.isEmpty() ? "ID" : currentColumns.get(0));
+//		pkColumns.add(currentColumns.isEmpty() ? "ID" : currentColumns.get(0));
+		pkColumns.add(currentColumns.get(0));
+		
+		if(tableName.equals("countryLanguage"))
+		{
+			pkColumns.add("Language");
+		}
+		
 		
 		for(int i=0; i<pkColumns.size(); i++) {
 			String colName = pkColumns.get(i);
@@ -257,7 +264,14 @@ public class WorldDbApp extends Application{
 				
 				int rowsAffected;
 				
-				rowsAffected = DeleteOperation.deleteRecord(con, tableName, pkColumns.get(0), validPkValues.get(0));
+//				rowsAffected = DeleteOperation.deleteRecord(con, tableName, pkColumns.get(0), validPkValues.get(0));
+				if(tableName.equals("countryLanguage"))
+				{
+					rowsAffected = DeleteOperation.deleteLanguage(con, validPkValues.get(0), validPkValues.get(1));
+				} else {
+					rowsAffected = DeleteOperation.deleteRecord(con, tableName, pkColumns.get(0), validPkValues.get(0));
+				}
+				
 				
 				if(rowsAffected > 0) {
 					showAlert("Veiksmīgi dzēsts!", "Ieraksti dzēsti " + rowsAffected);
