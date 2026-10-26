@@ -176,10 +176,22 @@ public class WorldDbApp extends Application{
 			try {
 				List<String> values = new ArrayList<>();
 				
+				
+				
 				for(int i=0; i<textFields.size(); i++) {
 					String colName = activeColumns.get(i);
 					String rawValue = textFields.get(i).getText();
 					values.add(rawValue);
+				}
+				
+				for (int i = 0; i < values.size(); i++) {
+					String value = values.get(i).trim();
+					if (value.isEmpty()) {
+						showAlert("Kļūda", activeColumns.get(i) + " nedrīkst būt tukšs!");
+						event.consume();
+						return;
+					}
+					values.set(i, value);
 				}
 				
 				if(isUpdate) {
@@ -192,7 +204,7 @@ public class WorldDbApp extends Application{
 					} else {
 						String pkColumn = currentColumns.get(0);
 						String pkValue = values.get(0);
-						showAlert("Informācija", "Ieraksts ar " +pkColumn + " = "+pkValue + "netika atrasts!");
+						showAlert("Informācija", "Ieraksts ar " +pkColumn + " = "+pkValue + " netika atrasts!");
 						event.consume();
 					}
 					
